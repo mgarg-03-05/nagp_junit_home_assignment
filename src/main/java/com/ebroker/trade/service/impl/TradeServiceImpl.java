@@ -2,6 +2,7 @@ package com.ebroker.trade.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,23 @@ public class TradeServiceImpl implements TradeService{
 	
 	@Override
 	public Fund getFunds() {
-		return fundsRepo.getById(1);	
+		Optional<Fund> fund = fundsRepo.findById(1);
+		if(fund.isPresent()) {
+			return fund.get();
+		}else {
+			return new Fund(0);
+		}	
 	}
 	
 	@Override
 	public Fund addFunds(double fundAmount) {
-		Fund existing = fundsRepo.getById(1);
+		Fund existing;
+		Optional<Fund> fund = fundsRepo.findById(1);
+		if(fund.isPresent()) {
+			existing = fund.get();
+		}else {
+			existing = new Fund(0);
+		}	
 		existing.setFund(existing.getFund() + fundAmount);
 		return fundsRepo.save(existing);
 	}
@@ -54,15 +66,14 @@ public class TradeServiceImpl implements TradeService{
 					return executeBuyOrder(equityDTO);
 			}
 		}catch(Exception e) {
-			//TODO
 			//e.printStackTrace();
-			return "Something went wrong. Please check your request and try again.";
+			return "Please check your request and try again.";
 		}
 	}
 
 	
 	public String executeBuyOrder(EquityDTO equityDTO) {
-		Fund availableFund = fundsRepo.getById(1);
+		Fund availableFund = getFunds();
 		double totalOrderAmount = equityDTO.getQuantity() * equityDTO.getPerStockPrice();
 		if(availableFund.getFund()< totalOrderAmount) {
 			return "You don't have sufficient funds to buy equity.";
@@ -86,7 +97,7 @@ public class TradeServiceImpl implements TradeService{
 		if(existing == null || equityDTO.getQuantity() > existing.getStockQuantity()) {
 			return "You don't have sufficient equity to sell";
 		}
-		Fund availableFund = fundsRepo.getById(1);
+		Fund availableFund = getFunds();
 		double totalOrderAmount = equityDTO.getQuantity() * equityDTO.getPerStockPrice();
 		existing.setStockQuantity(existing.getStockQuantity() - equityDTO.getQuantity());
 		availableFund.setFund(availableFund.getFund() + totalOrderAmount);

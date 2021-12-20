@@ -1,15 +1,12 @@
 package com.ebroker.trade.dto;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 public class EquityDTOTest {
 
 	@Test
-	public void shouldSetName() {
+	public void shouldTestSetName() {
 		String actualName = "hdfc";
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setName(actualName);
@@ -17,7 +14,7 @@ public class EquityDTOTest {
 	}
 	
 	@Test
-	public void shouldSetPerStockPrice() {
+	public void shouldTestSetPerStockPrice() {
 		double actualPrice = 2500;
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setPerStockPrice(actualPrice);;
@@ -25,7 +22,7 @@ public class EquityDTOTest {
 	}
 	
 	@Test
-	public void shouldSetOrderType() {
+	public void shouldTestSetOrderType() {
 		String actualType= "buy";
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setOrderType(actualType);
@@ -33,7 +30,7 @@ public class EquityDTOTest {
 	}
 	
 	@Test
-	public void shouldSetQuantity() {
+	public void shouldTestSetQuantity() {
 		int actualQuantity = 10;
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setQuantity(actualQuantity);

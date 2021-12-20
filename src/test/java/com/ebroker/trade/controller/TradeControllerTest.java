@@ -1,11 +1,7 @@
 package com.ebroker.trade.controller;
 
-import static org.hamcrest.CoreMatchers.any;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.anything;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -18,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.ebroker.trade.dto.EquityDTO;
@@ -65,7 +60,7 @@ public class TradeControllerTest {
 	}
 	
 	@Test
-	public void shouldTestAddFundSuccessCase() throws Exception{
+	public void shouldTestAddFund_successCase() throws Exception{
 		double amount = 1000;
 		Mockito.when(tradeService.addFunds(amount)).thenReturn(new Fund(amount));
 		mockMvc.perform(MockMvcRequestBuilders.post("/fund?amount="+amount))
@@ -74,7 +69,7 @@ public class TradeControllerTest {
 	}
 	
 	@Test
-	public void shouldTestAddFundFailCase() throws Exception{
+	public void shouldTestAddFund_failCase() throws Exception{
 		double amount = 1000;
 		Mockito.when(tradeService.addFunds(amount)).thenReturn(null);
 		mockMvc.perform(MockMvcRequestBuilders.post("/fund?amount="+amount))

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class IntegrationTest {
+class IntegrationTest {
 
 	@Autowired
 	MockMvc mockMvc;
@@ -43,13 +43,13 @@ public class IntegrationTest {
 	TradeController tradeController;
 
 	@Test
-	public void shouldReturnHomePage() throws Exception {
+	void shouldReturnHomePage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/")).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.is("Home Page.")));
 	}
 	
 	@Test
-	public void shouldReturnFund_availableInDB() throws Exception {
+	void shouldReturnFund_availableInDB() throws Exception {
 		Fund fund = new Fund(1000);
 		fund.setId(1);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.of(fund));
@@ -60,7 +60,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldReturn_zeroFund() throws Exception {
+	void shouldReturn_zeroFund() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/fund"))
 		  .andExpect(MockMvcResultMatchers.status().isOk())
 		  .andExpect(MockMvcResultMatchers.jsonPath("$",
@@ -68,7 +68,7 @@ public class IntegrationTest {
 	}
 
 	@Test
-	public void shouldTestAddFund_successCase_fundNotExists() throws Exception {
+	void shouldTestAddFund_successCase_fundNotExists() throws Exception {
 		double amount = 1000;
 		Fund fund = new Fund(amount);
 		Mockito.when(fundsRepo.save(Mockito.any(Fund.class))).thenReturn(fund);
@@ -78,7 +78,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestAddFund_successCase_fundExists() throws Exception{
+	void shouldTestAddFund_successCase_fundExists() throws Exception{
 		double amount = 1000;
 		Fund fund = new Fund(amount);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.of(fund));
@@ -89,7 +89,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestAddFund_failCase() throws Exception{
+	void shouldTestAddFund_failCase() throws Exception{
 		double amount = 1000;
 		mockMvc.perform(MockMvcRequestBuilders.post("/fund?amount=" + amount))
 				.andExpect(MockMvcResultMatchers.status().isInternalServerError())
@@ -97,7 +97,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldReturnEquityList() throws Exception{
+	void shouldReturnEquityList() throws Exception{
 		List<Equity> list = new ArrayList<>();
 		Equity hdfc = new Equity("hdfc", 4);
 		hdfc.setId(1);
@@ -109,7 +109,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestTrade_outOfWorkingHour() throws Exception{
+	void shouldTestTrade_outOfWorkingHour() throws Exception{
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
 			date.when(DateUtil :: checkForWorkingHours).thenReturn(false);
 			ObjectMapper mapper = new ObjectMapper();  
@@ -121,7 +121,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestCheckForWorkingHours() throws Exception{
+	void shouldTestCheckForWorkingHours() throws Exception{
 		EquityDTO equityDto = new EquityDTO("hdfc", 2500, 2, "buy");
 		ObjectMapper mapper = new ObjectMapper();  
 		mockMvc.perform(MockMvcRequestBuilders.post("/trade").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(equityDto)))
@@ -130,7 +130,7 @@ public class IntegrationTest {
 	
 	
 	@Test
-	public void shouldTestTrade_invalidOrder() throws Exception{
+	void shouldTestTrade_invalidOrder() throws Exception{
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
 			date.when(DateUtil :: checkForWorkingHours).thenReturn(true);
 			ObjectMapper mapper = new ObjectMapper();  
@@ -142,7 +142,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestTrade_buyOrder_insufficientFund() throws Exception{
+	void shouldTestTrade_buyOrder_insufficientFund() throws Exception{
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
 			date.when(DateUtil :: checkForWorkingHours).thenReturn(true);
 			ObjectMapper mapper = new ObjectMapper();  
@@ -154,7 +154,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestTrade_buyOrder_existingEquity() throws Exception {
+	void shouldTestTrade_buyOrder_existingEquity() throws Exception {
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
 			date.when(DateUtil :: checkForWorkingHours).thenReturn(true);
 			ObjectMapper mapper = new ObjectMapper();  
@@ -169,7 +169,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestTrade_buyOrder_newEquity() throws Exception {
+	void shouldTestTrade_buyOrder_newEquity() throws Exception {
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
 			date.when(DateUtil :: checkForWorkingHours).thenReturn(true);
 			ObjectMapper mapper = new ObjectMapper();  
@@ -183,7 +183,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestTrade_sellOrder_insufficientEquity() throws Exception {
+	void shouldTestTrade_sellOrder_insufficientEquity() throws Exception {
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
 			date.when(DateUtil :: checkForWorkingHours).thenReturn(true);
 			ObjectMapper mapper = new ObjectMapper();  
@@ -196,7 +196,7 @@ public class IntegrationTest {
 	}
 	
 	@Test
-	public void shouldTestTrade_sellOrder_success() throws Exception {
+	void shouldTestTrade_sellOrder_success() throws Exception {
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
 			date.when(DateUtil :: checkForWorkingHours).thenReturn(true);
 			ObjectMapper mapper = new ObjectMapper();  

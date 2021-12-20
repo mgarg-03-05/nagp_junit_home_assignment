@@ -11,13 +11,13 @@ import com.ebroker.trade.controller.TradeController;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class NagpUnitTestingApplicationTest {
+class NagpUnitTestingApplicationTest {
 	
 	@Autowired
 	TradeController tradeController;
 	
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
 		Assertions.assertThat(tradeController).isNotNull();
 	}
 

@@ -3,10 +3,10 @@ package com.ebroker.trade.dto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class EquityDTOTest {
+class EquityDTOTest {
 
 	@Test
-	public void shouldTestSetName() {
+	void shouldTestSetName() {
 		String actualName = "hdfc";
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setName(actualName);
@@ -14,7 +14,7 @@ public class EquityDTOTest {
 	}
 	
 	@Test
-	public void shouldTestSetPerStockPrice() {
+	void shouldTestSetPerStockPrice() {
 		double actualPrice = 2500;
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setPerStockPrice(actualPrice);;
@@ -22,7 +22,7 @@ public class EquityDTOTest {
 	}
 	
 	@Test
-	public void shouldTestSetOrderType() {
+	void shouldTestSetOrderType() {
 		String actualType= "buy";
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setOrderType(actualType);
@@ -30,7 +30,7 @@ public class EquityDTOTest {
 	}
 	
 	@Test
-	public void shouldTestSetQuantity() {
+	void shouldTestSetQuantity() {
 		int actualQuantity = 10;
 		EquityDTO equityDTO = new EquityDTO();
 		equityDTO.setQuantity(actualQuantity);

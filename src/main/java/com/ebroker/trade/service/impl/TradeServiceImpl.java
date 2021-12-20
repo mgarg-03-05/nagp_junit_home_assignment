@@ -1,12 +1,9 @@
 package com.ebroker.trade.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.ebroker.trade.dto.EquityDTO;
@@ -47,7 +44,7 @@ public class TradeServiceImpl implements TradeService{
 		}else {
 			existing = new Fund(0);
 		}	
-		existing.setFund(existing.getFund() + fundAmount);
+		existing.setAmount(existing.getAmount() + fundAmount);
 		return fundsRepo.save(existing);
 	}
 
@@ -59,14 +56,12 @@ public class TradeServiceImpl implements TradeService{
 				return "Trades can be executed from Monday to Friday and between 9AM to 5PM only.";
 			}
 			OrderType type = OrderType.valueOf(equityDTO.getOrderType().toUpperCase());
-			switch(type) {
-				case SELL:
-					return executeSellOrder(equityDTO);
-				default:
-					return executeBuyOrder(equityDTO);
+			if(OrderType.SELL.equals(type)){
+				return executeSellOrder(equityDTO);
+			}else{
+				return executeBuyOrder(equityDTO);
 			}
 		}catch(Exception e) {
-			//e.printStackTrace();
 			return "Please check your request and try again.";
 		}
 	}
@@ -75,7 +70,7 @@ public class TradeServiceImpl implements TradeService{
 	public String executeBuyOrder(EquityDTO equityDTO) {
 		Fund availableFund = getFunds();
 		double totalOrderAmount = equityDTO.getQuantity() * equityDTO.getPerStockPrice();
-		if(availableFund.getFund()< totalOrderAmount) {
+		if(availableFund.getAmount()< totalOrderAmount) {
 			return "You don't have sufficient funds to buy equity.";
 		}
 		Equity equity = equityRepo.findByStockName(equityDTO.getName().toLowerCase());
@@ -86,7 +81,7 @@ public class TradeServiceImpl implements TradeService{
 			equity.setStockName(equityDTO.getName().toLowerCase());
 			equity.setStockQuantity(equityDTO.getQuantity());
 		}
-		availableFund.setFund(availableFund.getFund() - totalOrderAmount);
+		availableFund.setAmount(availableFund.getAmount() - totalOrderAmount);
 		equityRepo.save(equity);
 		fundsRepo.save(availableFund);
 		return "Equity bought successfully.";	
@@ -100,7 +95,7 @@ public class TradeServiceImpl implements TradeService{
 		Fund availableFund = getFunds();
 		double totalOrderAmount = equityDTO.getQuantity() * equityDTO.getPerStockPrice();
 		existing.setStockQuantity(existing.getStockQuantity() - equityDTO.getQuantity());
-		availableFund.setFund(availableFund.getFund() + totalOrderAmount);
+		availableFund.setAmount(availableFund.getAmount() + totalOrderAmount);
 		equityRepo.save(existing);
 		fundsRepo.save(availableFund);
 		return "Equity sold successfully.";

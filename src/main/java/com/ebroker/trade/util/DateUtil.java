@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 
 public class DateUtil {
 	
+	private DateUtil() {
+		
+	}
+	
 	private static final String SUNDAY = "SUNDAY";
 	private static final String SATURDAY = "SATURDAY";
 

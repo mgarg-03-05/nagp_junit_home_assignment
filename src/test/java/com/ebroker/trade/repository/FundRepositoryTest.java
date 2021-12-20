@@ -11,19 +11,19 @@ import com.ebroker.trade.entity.Fund;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class FundRepositoryTest {
+class FundRepositoryTest {
 
 	@Autowired
 	private FundsRepository fundsRepo;
 	
 	@Test
-	public void shouldTestFundRepo() {
+	void shouldTestFundRepo() {
 		Fund fund = new Fund(1000); 
 		fund.setId(1); 
 		fund = fundsRepo.save(fund);
 		Fund dbFund = fundsRepo.getById(1);
-		Assertions.assertThat(dbFund).extracting(f -> f.getFund() == 1000);
+		Assertions.assertThat(dbFund).extracting(f -> f.getAmount()).isEqualTo(1000.0);
 		fundsRepo.deleteAll();
-		Assertions.assertThat(fundsRepo.findAll().isEmpty());
+		Assertions.assertThat(fundsRepo.findAll()).isEmpty();
 	}	
 }

@@ -11,18 +11,18 @@ import com.ebroker.trade.entity.Equity;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class EquityRepositoryTest {
+class EquityRepositoryTest {
 	
 	@Autowired
 	EquityRepository equityRepo;
 
 	@Test
-	public void shouldTestEquityRepo() {
+	void shouldTestEquityRepo() {
 		Equity equity = new Equity("hdfc", 10);
 		equityRepo.save(equity);
 		Equity result = equityRepo.findByStockName("hdfc");
 		Assertions.assertThat(result).isEqualTo(equity);
 		equityRepo.deleteAll();
-		Assertions.assertThat(equityRepo.findAll().isEmpty());
+		Assertions.assertThat(equityRepo.findAll()).isEmpty();
 	}
 }

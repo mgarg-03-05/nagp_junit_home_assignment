@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-public class DateUtilTest {
+class DateUtilTest {
 	private static LocalDateTime dateTime;
 	
 	@Test
 	@DisplayName("Should check if datetime is weekday")
-	public void shouldtest_weekDay() {
+	void shouldtest_weekDay() {
 		String str = "2021-12-13 10:30";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		dateTime = LocalDateTime.parse(str, formatter);
@@ -27,7 +27,7 @@ public class DateUtilTest {
 	
 	@Test
 	@DisplayName("Should check if datetime is out working hour")
-	public void shouldTest_outOfWorkingHour() {
+	void shouldTest_outOfWorkingHour() {
 		String str = "2021-12-13 08:30";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		dateTime = LocalDateTime.parse(str, formatter);
@@ -39,7 +39,7 @@ public class DateUtilTest {
 	
 	@Test
 	@DisplayName("Should check if datetime is weekend or out of working hours")
-	public void shouldtest_weekend() {
+	void shouldtest_weekend() {
 		String str = "2021-12-12 10:30";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		dateTime = LocalDateTime.parse(str, formatter);

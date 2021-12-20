@@ -20,7 +20,7 @@ import com.ebroker.trade.repository.EquityRepository;
 import com.ebroker.trade.repository.FundsRepository;
 import com.ebroker.trade.util.DateUtil;
 
-public class TradeServiceImpTest {
+class TradeServiceImpTest {
 
 	@Mock
 	FundsRepository fundsRepo;
@@ -38,7 +38,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldTestGetFund_availableInDB() {
+	void shouldTestGetFund_availableInDB() {
 		Fund actual = new Fund(10);
 		actual.setId(1);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.of(actual));
@@ -47,32 +47,32 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldTestGetFund_fundNotAvailable() {
+	void shouldTestGetFund_fundNotAvailable() {
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.empty());
 		final Fund expectedFund = tradeService.getFunds();
-		Assertions.assertEquals(expectedFund.getFund(), 0);
+		Assertions.assertEquals(0, expectedFund.getAmount());
 	}
 	@Test
-	public void shouldTestAddFund_fundExists() {
+	void shouldTestAddFund_fundExists() {
 		Fund actual = new Fund(10);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.of(actual));
-		actual.setFund(10+20);
+		actual.setAmount(10+20);
 		Mockito.when(fundsRepo.save(actual)).thenReturn(actual);
 		final Fund expected = tradeService.addFunds(20);
 		Assertions.assertEquals(expected, actual);
 	}
 	
 	@Test
-	public void shouldAddFund_fundNotExists() {
+	void shouldAddFund_fundNotExists() {
 		Fund actual = new Fund(20);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.empty());
 		Mockito.when(fundsRepo.save(Mockito.any(Fund.class))).thenReturn(actual);
 		final Fund expected = tradeService.addFunds(20);
-		Assertions.assertEquals(expected.getFund(), actual.getFund());
+		Assertions.assertEquals(expected.getAmount(), actual.getAmount());
 	}
 	
 	@Test
-	public void shouldReturnEquityList() {
+	void shouldReturnEquityList() {
 		Equity hdfc = new Equity("HDFC", 10);
 		hdfc.setId(1);
 		List<Equity> actual = new ArrayList<>();
@@ -83,7 +83,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldTestBuyEquity_failCase() {
+	void shouldTestBuyEquity_failCase() {
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "buy");
 		Fund fund = new Fund(10);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.of(fund));
@@ -93,7 +93,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldTestBuyEquity_successCase_newEquity() {
+	void shouldTestBuyEquity_successCase_newEquity() {
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "buy");
 		Fund fund = new Fund(5000);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.of(fund));
@@ -105,7 +105,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldTestBuyEquity_successCase_existingEquity() {
+	void shouldTestBuyEquity_successCase_existingEquity() {
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "buy");
 		Fund fund = new Fund(5000);
 		Mockito.when(fundsRepo.findById(1)).thenReturn(Optional.of(fund));
@@ -118,7 +118,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldTestSellOrder_failCase(){
+	void shouldTestSellOrder_failCase(){
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "sell");
 		String actual = "You don't have sufficient equity to sell";
 		final String expected = tradeService.executeSellOrder(equityDTO);
@@ -126,7 +126,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldTestSellOrder_successCase() {
+	void shouldTestSellOrder_successCase() {
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "sell");
 		Equity equity = new Equity("hdfc", 2);
 		Fund fund = new Fund(0);
@@ -140,7 +140,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldReturnOutOfWorkingHour() {
+	void shouldReturnOutOfWorkingHour() {
 		String actual = "Trades can be executed from Monday to Friday and between 9AM to 5PM only.";
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "sell");
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
@@ -151,7 +151,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldReturnInvalidOrder() {
+	void shouldReturnInvalidOrder() {
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "invalid");
 		String actual = "Please check your request and try again.";
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
@@ -162,7 +162,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldCallExecuteBuyOrderMethod() {
+	void shouldCallExecuteBuyOrderMethod() {
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "buy");
 		String actual = "You don't have sufficient funds to buy equity.";
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {
@@ -175,7 +175,7 @@ public class TradeServiceImpTest {
 	}
 	
 	@Test
-	public void shouldCallExecuteSellOrder() {
+	void shouldCallExecuteSellOrder() {
 		EquityDTO equityDTO = new EquityDTO("hdfc", 2500, 2, "sell");
 		String actual = "You don't have sufficient equity to sell";
 		try(MockedStatic<DateUtil> date = Mockito.mockStatic(DateUtil.class)) {

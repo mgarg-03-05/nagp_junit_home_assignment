@@ -22,15 +22,15 @@ public class Fund implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name= "fund")
-	private double fund;
+	@Column(name= "amount")
+	private double amount;
 	
 	public Fund() {
 		super();
 	}
 
 	public Fund(double fund) {
-		this.fund = fund;
+		this.amount = fund;
 	}
 	
 	public int getId() {
@@ -41,12 +41,12 @@ public class Fund implements Serializable{
 		this.id = id;
 	}
 
-	public double getFund() {
-		return fund;
+	public double getAmount() {
+		return amount;
 	}
 
-	public void setFund(double fund) {
-		this.fund = fund;
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 	
 	

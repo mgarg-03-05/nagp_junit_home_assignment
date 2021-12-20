@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(TradeController.class)
-public class TradeControllerTest {
+class TradeControllerTest {
 
 	@MockBean
 	private TradeService tradeService;
@@ -33,14 +33,14 @@ public class TradeControllerTest {
 	private MockMvc mockMvc;	
 	
 	@Test
-	public void shouldTestHomePage() throws Exception {
+	void shouldTestHomePage() throws Exception {
 		mockMvc.perform(MockMvcRequestBuilders.get("/"))
 		.andExpect(MockMvcResultMatchers.status().isOk())
 		.andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.is("Home Page.")));
 	}
 	
 	@Test
-	public void shouldTestGetFunds() throws Exception {
+	void shouldTestGetFunds() throws Exception {
 		Fund fund = new Fund(1000);
 		Mockito.when(tradeService.getFunds()).thenReturn(fund);
 		mockMvc.perform(MockMvcRequestBuilders.get("/fund"))
@@ -49,7 +49,7 @@ public class TradeControllerTest {
 	}
 	
 	@Test
-	public void shouldTestGetEquity() throws Exception{
+	void shouldTestGetEquity() throws Exception{
 		Equity hdfc = new Equity("hdfc", 10);
 		List<Equity> list = new ArrayList<>();
 		list.add(hdfc);
@@ -60,7 +60,7 @@ public class TradeControllerTest {
 	}
 	
 	@Test
-	public void shouldTestAddFund_successCase() throws Exception{
+	void shouldTestAddFund_successCase() throws Exception{
 		double amount = 1000;
 		Mockito.when(tradeService.addFunds(amount)).thenReturn(new Fund(amount));
 		mockMvc.perform(MockMvcRequestBuilders.post("/fund?amount="+amount))
@@ -69,7 +69,7 @@ public class TradeControllerTest {
 	}
 	
 	@Test
-	public void shouldTestAddFund_failCase() throws Exception{
+	void shouldTestAddFund_failCase() throws Exception{
 		double amount = 1000;
 		Mockito.when(tradeService.addFunds(amount)).thenReturn(null);
 		mockMvc.perform(MockMvcRequestBuilders.post("/fund?amount="+amount))
@@ -78,7 +78,7 @@ public class TradeControllerTest {
 	}
 	
 	@Test
-	public void shouldTestTrade() throws Exception{
+	void shouldTestTrade() throws Exception{
 		ObjectMapper mapper = new ObjectMapper();  
 		EquityDTO equityDto = new EquityDTO("hdfc", 2500, 2, "buy");
 		mockMvc.perform(MockMvcRequestBuilders.post("/trade").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(equityDto)))
